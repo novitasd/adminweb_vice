@@ -25,6 +25,7 @@ function ProductForm({
         description: "",
         price: "",
         offerPrice: "",
+        quality: "",
         brandId: "",
         categoryId: "",
         active: true,
@@ -78,6 +79,7 @@ useEffect(() => {
         description: product.description ?? "",
         price: product.price ?? "",
         offerPrice: product.offerPrice ?? "",
+        quality: product.quality ?? "",
         brandId: product.brandId ?? "",
         categoryId: product.categoryId ?? "",
         active: product.active,
@@ -346,59 +348,81 @@ return (
 
             </div>
 
-            <div className="form-row">
+<div className="form-row">
 
-                <div className="form-group">
+    <div className="form-group">
+        <label>Marca</label>
 
-                    <label>Marca</label>
+        <select
+            name="brandId"
+            value={form.brandId}
+            onChange={handleChange}
+        >
+            <option value="">
+                Seleccione una marca
+            </option>
 
-                    <select
-                        name="brandId"
-                        value={form.brandId}
-                        onChange={handleChange}
-                    >
-                        <option value="">
-                            Seleccione una marca
-                        </option>
+            {brands.map((brand) => (
+                <option
+                    key={brand.id}
+                    value={brand.id}
+                >
+                    {brand.name}
+                </option>
+            ))}
+        </select>
+    </div>
 
-                        {brands.map((brand) => (
-                            <option
-                                key={brand.id}
-                                value={brand.id}
-                            >
-                                {brand.name}
-                            </option>
-                        ))}
-                    </select>
+    <div className="form-group">
+        <label>Categoría</label>
 
-                </div>
+        <select
+            name="categoryId"
+            value={form.categoryId}
+            onChange={handleChange}
+        >
+            <option value="">
+                Seleccione una categoría
+            </option>
 
-                <div className="form-group">
+            {categories.map((category) => (
+                <option
+                    key={category.id}
+                    value={category.id}
+                >
+                    {category.name}
+                </option>
+            ))}
+        </select>
+    </div>
 
-                    <label>Categoría</label>
+    <div className="form-group">
+        <label>Calidad</label>
 
-                    <select
-                        name="categoryId"
-                        value={form.categoryId}
-                        onChange={handleChange}
-                    >
-                        <option value="">
-                            Seleccione una categoría
-                        </option>
+        <select
+            name="quality"
+            value={form.quality}
+            onChange={handleChange}
+        >
+            <option value="">
+                Seleccione una calidad
+            </option>
 
-                        {categories.map((category) => (
-                            <option
-                                key={category.id}
-                                value={category.id}
-                            >
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
+            <option value="G5">
+                G5
+            </option>
 
-                </div>
+            <option value="IMPORTADA">
+                Importada
+            </option>
 
-            </div>
+            <option value="PREMIUM">
+                Premium
+            </option>
+        </select>
+    </div>
+
+</div>
 
             <div className="form-group">
 

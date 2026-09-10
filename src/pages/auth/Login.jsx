@@ -11,7 +11,6 @@ import Button from "../../components/ui/Button";
 import "./login.css";
 
 function Login() {
-
     const navigate = useNavigate();
 
     const { login } = useAuth();
@@ -26,7 +25,6 @@ function Login() {
     const [error, setError] = useState("");
 
     function handleChange(e) {
-
         const { name, value } = e.target;
 
         setForm((prev) => ({
@@ -36,13 +34,11 @@ function Login() {
     }
 
     async function handleSubmit(e) {
-
         e.preventDefault();
 
         setError("");
 
         try {
-
             setLoading(true);
 
             await login(form);
@@ -50,22 +46,17 @@ function Login() {
             navigate("/");
 
         } catch (err) {
-
             setError(
                 err.response?.data?.message ||
                 "Correo o contraseña incorrectos."
             );
 
         } finally {
-
             setLoading(false);
-
         }
-
     }
 
     return (
-
         <AuthLayout>
 
             <section className="login">
@@ -74,9 +65,17 @@ function Login() {
 
                     <div className="login-header">
 
-                        <h1>TNIS</h1>
+                        <span className="login-brand">
+                            TIOURBAN
+                        </span>
 
-                        <p>Panel de Administración</p>
+                        <h1>
+                            Panel de Administración
+                        </h1>
+
+                        <p>
+                            Ingresa tus credenciales para continuar
+                        </p>
 
                     </div>
 
@@ -91,7 +90,8 @@ function Login() {
                             name="email"
                             value={form.email}
                             onChange={handleChange}
-                            placeholder="admin@tnis.pe"
+                            placeholder="admin@tiourban.pe"
+                            autoComplete="email"
                         />
 
                         <Input
@@ -100,7 +100,8 @@ function Login() {
                             name="password"
                             value={form.password}
                             onChange={handleChange}
-                            placeholder="••••••••"
+                            placeholder="Ingresa tu contraseña"
+                            autoComplete="current-password"
                         />
 
                         {error && (
@@ -125,9 +126,7 @@ function Login() {
             </section>
 
         </AuthLayout>
-
     );
-
 }
 
 export default Login;

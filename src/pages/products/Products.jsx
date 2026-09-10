@@ -4,6 +4,7 @@ import ProductTable from "../../components/products/ProductTable";
 import ProductModal from "../../components/products/ProductModal";
 import ProductForm from "../../components/products/ProductForm";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
+import ProductFilters from "../../components/products/ProductFilters";
 
 import {
     getProducts,
@@ -50,6 +51,9 @@ function Products() {
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [productToDelete, setProductToDelete] = useState(null);
     const [deleting, setDeleting] = useState(false);
+
+    const [search, setSearch] = useState("");
+const [qualityFilter, setQualityFilter] = useState("ALL");
 
     useEffect(() => {
         loadProducts();
@@ -339,70 +343,90 @@ async function handleSetPrimaryImage(imageId) {
     if (loading) {
         return <p>Cargando productos...</p>;
     }
+const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+        product.name
+            ?.toLowerCase()
+            .includes(search.toLowerCase()) ||
+        product.brand?.name
+            ?.toLowerCase()
+            .includes(search.toLowerCase()) ||
+        product.category?.name
+            ?.toLowerCase()
+            .includes(search.toLowerCase());
 
-    return (
-        <div className="products-page">
+    const matchesQuality =
+        qualityFilter === "ALL" ||
+        product.quality === qualityFilter;
 
-            <div className="products-header">
+    return matchesSearch && matchesQuality;
+});
+  return (
+    <div className="products-page">
 
-                <h1>Productos</h1>
+        <div className="products-header">
 
-                <div className="products-actions">
+            <h1>Productos</h1>
 
-                    <input
-                        type="text"
-                        placeholder="Buscar producto..."
-                    />
+            <div className="products-actions">
 
-                    <button onClick={handleOpenCreate}>
-                        + Nuevo producto
-                    </button>
-
-                </div>
+                <button onClick={handleOpenCreate}>
+                    + Nuevo producto
+                </button>
 
             </div>
 
-            <ProductTable
-                products={products}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-            />
-
-            <ProductModal
-                open={openModal}
-                title={
-                    selectedProduct
-                        ? "Editar producto"
-                        : "Nuevo producto"
-                }
-                onClose={handleCloseModal}
-            >
-                <ProductForm
-    product={selectedProduct}
-    onSubmit={handleSubmitProduct}
-    onDeleteImage={handleDeleteImage}
-    onSetPrimaryImage={handleSetPrimaryImage}
-/>
-            </ProductModal>
-
-            <ConfirmModal
-                open={openDeleteModal}
-                title="Eliminar producto"
-                message={
-                    productToDelete
-                        ? `¿Seguro que deseas eliminar "${productToDelete.name}"?`
-                        : ""
-                }
-                onCancel={() => {
-                    setOpenDeleteModal(false);
-                    setProductToDelete(null);
-                }}
-                onConfirm={handleConfirmDelete}
-                loading={deleting}
-            />
-
         </div>
-    );
+
+        <ProductFilters
+            search={search}
+            onSearchChange={setSearch}
+            qualityFilter={qualityFilter}
+            onQualityChange={setQualityFilter}
+            products={products}
+        />
+
+        <ProductTable
+            products={filteredProducts}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+        />
+
+        <ProductModal
+            open={openModal}
+            title={
+                selectedProduct
+                    ? "Editar producto"
+                    : "Nuevo producto"
+            }
+            onClose={handleCloseModal}
+        >
+            <ProductForm
+                product={selectedProduct}
+                onSubmit={handleSubmitProduct}
+                onDeleteImage={handleDeleteImage}
+                onSetPrimaryImage={handleSetPrimaryImage}
+            />
+        </ProductModal>
+
+        <ConfirmModal
+            open={openDeleteModal}
+            title="Eliminar producto"
+            message={
+                productToDelete
+                    ? `¿Seguro que deseas eliminar "${productToDelete.name}"?`
+                    : ""
+            }
+            onCancel={() => {
+                setOpenDeleteModal(false);
+                setProductToDelete(null);
+            }}
+            onConfirm={handleConfirmDelete}
+            loading={deleting}
+        />
+
+    </div>
+);
 }
 
 export default Products;

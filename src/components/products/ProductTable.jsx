@@ -1,11 +1,34 @@
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import "./ProductTable.css";
 
+const qualityOrder = {
+    G5: 1,
+    PREMIUM: 2,
+    IMPORTADA: 3,
+};
+
 function ProductTable({
     products,
     onEdit,
     onDelete,
 }) {
+    const sortedProducts = [...products].sort((a, b) => {
+        return (
+            (qualityOrder[a.quality] ?? 99) -
+            (qualityOrder[b.quality] ?? 99)
+        );
+    });
+
+    function getQualityLabel(quality) {
+        const labels = {
+            G5: "G5",
+            PREMIUM: "Premium",
+            IMPORTADA: "Importada",
+        };
+
+        return labels[quality] ?? quality ?? "-";
+    }
+
     return (
         <div className="product-table-wrapper">
 
@@ -16,6 +39,7 @@ function ProductTable({
                         <th>Nombre</th>
                         <th>Marca</th>
                         <th>Categoría</th>
+                        <th>Calidad</th>
                         <th>Precio</th>
                         <th>Estado</th>
                         <th>Acciones</th>
@@ -24,7 +48,7 @@ function ProductTable({
 
                 <tbody>
 
-                    {products.map((product) => (
+                    {sortedProducts.map((product) => (
 
                         <tr key={product.id}>
 
@@ -38,6 +62,16 @@ function ProductTable({
 
                             <td data-label="Categoría">
                                 {product.category?.name ?? "-"}
+                            </td>
+
+                            <td data-label="Calidad">
+                                <span
+                                    className={`quality ${
+                                        product.quality?.toLowerCase() ?? ""
+                                    }`}
+                                >
+                                    {getQualityLabel(product.quality)}
+                                </span>
                             </td>
 
                             <td data-label="Precio">

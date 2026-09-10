@@ -183,3 +183,34 @@
     }
 
 }
+
+
+.quality {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 7px 14px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.quality.g5 {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.quality.premium {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.quality.importada {
+    background: #dcfce7;
+    color: #15803d;
+}

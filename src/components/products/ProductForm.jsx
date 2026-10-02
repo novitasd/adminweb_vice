@@ -49,6 +49,8 @@ const [sizeName, setSizeName] = useState("");
 const [sizeStock, setSizeStock] = useState("");
 const [pendingSizes, setPendingSizes] = useState([]);
 
+const [isSaving, setIsSaving] = useState(false);
+
 
 
 async function loadData() {
@@ -180,25 +182,36 @@ const previewImages = [
     })),
 ];
 
-function handleSubmit(e) {
+async function handleSubmit(e) {
     e.preventDefault();
 
-    onSubmit({
-        ...form,
+    // Evita múltiples clics mientras se está guardando
+    if (isSaving) return;
 
-        images,
+    setIsSaving(true);
 
-        sizes: pendingSizes.map((item) => ({
-            name: item.name,
-            stock: item.stock,
-        })),
+    try {
+        await onSubmit({
+            ...form,
 
-        price: Number(form.price),
+            images,
 
-        offerPrice: form.offerPrice
-            ? Number(form.offerPrice)
-            : null,
-    });
+            sizes: pendingSizes.map((item) => ({
+                name: item.name,
+                stock: item.stock,
+            })),
+
+            price: Number(form.price),
+
+            offerPrice: form.offerPrice
+                ? Number(form.offerPrice)
+                : null,
+        });
+    } catch (error) {
+        console.error("Error guardando producto:", error);
+    } finally {
+        setIsSaving(false);
+    }
 }
 
 function handleAddPendingSize() {
@@ -720,13 +733,16 @@ return (
         </section>
 
         <button
-            type="submit"
-            className="save-button"
-        >
-            {product
-                ? "Guardar cambios"
-                : "Guardar producto"}
-        </button>
+    type="submit"
+    className="save-button"
+    disabled={isSaving}
+>
+    {isSaving
+        ? "Guardando..."
+        : product
+            ? "Guardar cambios"
+            : "Guardar producto"}
+</button>
 
     </form>
 );

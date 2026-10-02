@@ -12,6 +12,7 @@ import {
     createProduct,
     updateProduct,
     deleteProduct,
+    reorderProducts,
 } from "../../services/product.service";
 
 import {
@@ -77,7 +78,23 @@ async function loadProducts() {
         setLoading(false);
     }
 }
+async function handleReorderProducts(products) {
+    try {
+        await reorderProducts(products);
 
+        toast.success("Orden actualizado correctamente");
+
+        await loadProducts();
+
+    } catch (error) {
+        console.error("Error reordenando productos:", error);
+
+        toast.error(
+            error.response?.data?.message ||
+            "No se pudo actualizar el orden."
+        );
+    }
+}
 async function saveProductSizes(productId, sizes) {
     if (!sizes?.length) return;
 
@@ -390,6 +407,7 @@ const filteredProducts = products.filter((product) => {
             products={filteredProducts}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            onReorder={handleReorderProducts}
         />
 
         <ProductModal

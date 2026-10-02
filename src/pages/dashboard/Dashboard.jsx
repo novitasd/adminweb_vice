@@ -45,7 +45,7 @@ function Dashboard() {
 
 return (
     <div className="dashboard-page">
-        <h1>Dashboard</h1>
+        <h1>Panel de productos</h1>
 
         {loading ? (
             <p>Cargando estadísticas...</p>

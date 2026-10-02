@@ -26,3 +26,11 @@ export async function getProductById(id) {
     const { data } = await api.get(`/products/id/${id}`);
     return data;
 }
+
+export async function reorderProducts(products) {
+    const { data } = await api.put("/products/reorder", {
+        products,
+    });
+
+    return data;
+}

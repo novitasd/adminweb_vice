@@ -7,12 +7,6 @@
 
     padding: 32px;
 
-    background-image:
-        linear-gradient(
-            rgba(0, 0, 0, 0.45),
-            rgba(0, 0, 0, 0.45)
-        ),
-        url("https://i.pinimg.com/1200x/65/a5/02/65a502f24298c75c23f2362d4e76cd12.jpg");
 
     background-size: cover;
     background-position: center;
